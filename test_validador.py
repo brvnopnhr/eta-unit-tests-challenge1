@@ -37,7 +37,7 @@ def test_validar_cep_retorna_true_para_cep_valido(validador, cep_valido):
         "69000-0000",    # tamanho incorreto (dígito a mais após o hífen)
         "ABCDE-FGH",     # não numérico
         "69000_000",     # separador incorreto
-        "",               # vazio
+        "",              # vazio
     ],
 )
 def test_validar_cep_retorna_false_para_cep_invalido(validador, cep_invalido):
@@ -92,7 +92,7 @@ def test_validar_cpf_retorna_true_para_cpf_valido(validador, cpf_valido):
         "5299822472",      # tamanho incorreto (faltando um dígito)
         "529982247255",    # tamanho incorreto (dígito a mais)
         "ABC.DEF.GHI-JK",  # não numérico
-        "",                 # vazio
+        "",                # vazio
     ],
 )
 def test_validar_cpf_retorna_false_para_cpf_invalido(validador, cpf_invalido):
@@ -123,7 +123,7 @@ def test_validar_cpf_levanta_value_error_para_valor_nao_texto(validador, valor_n
 @pytest.mark.parametrize(
     "cnpj_valido",
     [
-        "11.222.333/0001-81",  # com máscara
+        "11.222.333/0001-81",   # com máscara
         "11222333000181",       # sem máscara
         "04.252.011/0001-10",   # com máscara
         "04252011000110",       # sem máscara
@@ -143,10 +143,10 @@ def test_validar_cnpj_retorna_true_para_cnpj_valido(validador, cnpj_valido):
         "11.111.111/1111-11",  # dígitos todos repetidos
         "11.222.333/0001-00",  # dígitos verificadores incorretos
         "11.222.333/0001-82",  # último dígito verificador alterado
-        "1122233300018",        # tamanho incorreto (faltando um dígito)
-        "112223330001811",      # tamanho incorreto (dígito a mais)
-        "AB.CDE.FGH/IJKL-MN",   # não numérico
-        "",                      # vazio
+        "1122233300018",       # tamanho incorreto (faltando um dígito)
+        "112223330001811",     # tamanho incorreto (dígito a mais)
+        "AB.CDE.FGH/IJKL-MN",  # não numérico
+        "",                    # vazio
     ],
 )
 def test_validar_cnpj_retorna_false_para_cnpj_invalido(validador, cnpj_invalido):
