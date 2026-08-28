@@ -1,9 +1,6 @@
 import re
 
-
 class Validador:
-    """Classe utilitária para validação de CEP, CPF e CNPJ."""
-
     @staticmethod
     def _garantir_texto(valor) -> None:
         """Levanta ValueError se `valor` não for uma string."""
@@ -115,13 +112,17 @@ if __name__ == "__main__":
 
     # CEP
     print(validador.validar_cep("69000-000"))   # True
+    print(validador.validar_cep("69000000"))    # True
     print(validador.validar_cep("6900-000"))    # False (tamanho incorreto)
 
     # CPF
+    print(validador.validar_cpf("529.982.247-25"))  # True
     print(validador.validar_cpf("52998224725"))      # True
     print(validador.validar_cpf("111.111.111-11"))   # False (dígitos repetidos)
+    print(validador.validar_cpf("123.456.789-00"))   # False (dígito verificador inválido)
 
     # CNPJ
+    print(validador.validar_cnpj("11.222.333/0001-81"))  # True
     print(validador.validar_cnpj("11222333000181"))       # True
     print(validador.validar_cnpj("11.111.111/1111-11"))   # False (dígitos repetidos)
 
