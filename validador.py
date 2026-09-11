@@ -1,6 +1,12 @@
 import re
 
+from servico_correios import ServicoCorreios
+
 class Validador:
+    def __init__(self, servico_correios: ServicoCorreios | None = None) -> None:
+        """Inicializa o validador injetando o serviço externo de CEP."""
+        self._servico_correios = servico_correios or ServicoCorreios()
+
     @staticmethod
     def _garantir_texto(valor) -> None:
         """Levanta ValueError se `valor` não for uma string."""
@@ -42,7 +48,11 @@ class Validador:
             return False
 
         digitos = self._apenas_digitos(texto_limpo)
-        return len(digitos) == 8
+        if len(digitos) != 8:
+            return False
+
+        # Confirma a validade do CEP consultando o serviço externo dos Correios
+        return self._servico_correios.valida_cep_api(cep)
 
     # ------------------------------------------------------------------
     # CPF

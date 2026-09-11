@@ -8,6 +8,14 @@ def validador() -> Validador:
     return Validador()
 
 
+@pytest.fixture(autouse=True)
+def mock_servico_correios(mocker):
+    """Substitui a chamada externa de validação de CEP para não depender da rede."""
+    return mocker.patch(
+        "servico_correios.ServicoCorreios.valida_cep_api", return_value=True
+    )
+
+
 # ----------------------------------------------------------------------
 # CEP - casos válidos
 # ----------------------------------------------------------------------
@@ -61,6 +69,27 @@ def test_validar_cep_retorna_false_para_cep_invalido(validador, cep_invalido):
 def test_validar_cep_levanta_value_error_para_valor_nao_texto(validador, valor_nao_texto):
     with pytest.raises(ValueError):
         validador.validar_cep(valor_nao_texto)
+
+
+# ----------------------------------------------------------------------
+# CEP - integração com o serviço externo
+# ----------------------------------------------------------------------
+
+def test_validar_cep_chama_valida_cep_api_do_servico_correios(
+    validador, mock_servico_correios
+):
+    """Valida localmente e confirma a validade via API dos Correios."""
+    assert validador.validar_cep("69000-000") is True
+    mock_servico_correios.assert_called_once_with("69000-000")
+
+
+def test_validar_cep_retorna_false_quando_servico_externo_rejeita(
+    mock_servico_correios
+):
+    """Retorna False quando a API dos Correios rejeita o CEP."""
+    mock_servico_correios.return_value = False
+
+    assert Validador().validar_cep("69000-000") is False
 
 # ----------------------------------------------------------------------
 # CPF - casos válidos
